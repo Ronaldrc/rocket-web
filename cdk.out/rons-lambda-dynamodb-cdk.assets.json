@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "e2b324cc80adbbb06e47fdee8a2574c8ab6e419aa7b04a7b20531dd1af98ec18": {
+      "source": {
+        "path": "rons-lambda-dynamodb-cdk.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "e2b324cc80adbbb06e47fdee8a2574c8ab6e419aa7b04a7b20531dd1af98ec18.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

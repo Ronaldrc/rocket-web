@@ -4,7 +4,8 @@ from aws_cdk import (
     aws_iam as iam,
     aws_lambda as lambda_,
     aws_dynamodb as dynamodb,
-    RemovalPolicy
+    RemovalPolicy,
+    Duration
 )
 
 class LambdaDynamoStack(Stack):
@@ -13,7 +14,7 @@ class LambdaDynamoStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # DynamoDB Table
-        table_name = "rocket-web"
+        table_name = "rocket-web-table"
         partition_key_name = "uid"
         read_capacity_units = 5
         write_capacity_units = 5
@@ -28,20 +29,21 @@ class LambdaDynamoStack(Stack):
                             removal_policy=RemovalPolicy.DESTROY)
         
         # Lambda Function
-        lambda_function = lambda_.Function(self, "rocket-web",
-                                           runtime=lambda_.Runtime.PYTHON_3_8,
-                                           handler="lambda_function.py",
-                                           path=lambda_.Code.from_asset("lambda.zip"))
+        lambda_function = lambda_.Function(self, "rocket-web-lambda",
+                                           function_name="rocket-web-lambda",
+                                           runtime=lambda_.Runtime.PYTHON_3_12,
+                                           handler="lambda_function.lambda_handler",
+                                           timeout=Duration.minutes(1),
+                                           code=lambda_.Code.from_asset("lambda_test.zip"))
 
         # IAM Permissions
         table.grant_read_write_data(lambda_function)
         lambda_function.add_to_role_policy(iam.PolicyStatement(
             actions=["dynamodb:*"],
-            resources=[table.table_arn],
-        ))
+            resources=[table.table_arn]))
 
         # Invoke Lambda function once
-
+        
 
         # Populate dynamoDB
 
